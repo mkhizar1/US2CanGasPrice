@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gas Price Converter</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#convertBtn").click(function() {
+                var gasPrice = $("#gasPrice").val();
+
+                // Make API call to fetch exchange rate
+                $.ajax({
+                    url: "https://api.exchangerate-api.com/v4/latest/USD",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        var exchangeRate = data.rates.CAD;
+
+                        // Perform the conversion
+                        var convertedPrice = (gasPrice * exchangeRate) / 3.78541;
+
+                        // Display the converted price
+                        $("#result").text(convertedPrice.toFixed(2) + " CAD per liter");
+                    },
+                    error: function() {
+                        $("#result").text("Failed to fetch exchange rate. Please try again later.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Gas Price Converter</h1>
+    <label for="gasPrice">Enter gas price in US$/gallon:</label>
+    <input type="text" id="gasPrice">
+    <button id="convertBtn">Convert</button>
+    <div id="result"></div>
+</body>
+</html>
